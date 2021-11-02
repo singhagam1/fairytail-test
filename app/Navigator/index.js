@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  NavigationContainer,
-} from "@react-navigation/native";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import NavigationService from "../Navigator/NavigationService";
 
+//Screens
 import Home from "../Screens";
 import Profile from "../Screens/Profile";
 import Settings from "../Screens/Settings";
@@ -13,8 +12,6 @@ const RootStack = createStackNavigator();
 
 //Root Navigator
 function AppNavigator() {
-  React.useEffect(() => {}, []);
-
   return (
     <NavigationContainer
       ref={(navigatorRef) => {
