@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -8,9 +8,21 @@ import {
 } from "react-native-responsive-screen";
 import Header from "../../Components/Header";
 import { dummy_profile } from "../../Assets/images";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Profile = (props) => {
   const navigation = useNavigation();
+  const [showData, setShowData] = useState(true);
+
+  React.useEffect(() => {
+    async function checkdata() {
+      let id = await AsyncStorage.getItem("profileType");
+      if (id === "1") {
+        setShowData(false);
+      }
+    }
+    checkdata();
+  }, []);
 
   return (
     <SafeAreaView style={{ backgroundColor: "#FFF", flex: 1 }}>
@@ -18,23 +30,34 @@ const Profile = (props) => {
       <Image source={dummy_profile} style={Localstyles.dummyPicture} />
       <Text style={Localstyles.name}>Taige, United States, 34</Text>
 
-      <View style={Localstyles.innerContainer}>
-        <View>
-          <Text style={Localstyles.character}>Character:</Text>
-          <Text style={Localstyles.category}>Aladdin</Text>
-        </View>
-        <TouchableOpacity style={Localstyles.buttonStyle} onPress={() => {}}>
-          <Text style={Localstyles.friends}>Only Friends</Text>
-        </TouchableOpacity>
-      </View>
-      <Text style={Localstyles.paragraph}>
-        Most adventurous experience: {"\n"}My friend and I got stranded in a
-        blizzard when our SUV froze in Iceland!
-      </Text>
-      <Text style={Localstyles.paragraph}>
-        Top wishes: {"\n"}Take a year off to explore the world. {"\n"}Have a
-        family. Create a better life for people around me.
-      </Text>
+      {showData ? (
+        <>
+          <View style={Localstyles.innerContainer}>
+            <View>
+              <Text style={Localstyles.character}>Character:</Text>
+              <Text style={Localstyles.category}>Aladdin</Text>
+            </View>
+            <TouchableOpacity
+              style={Localstyles.buttonStyle}
+              onPress={() => {}}
+            >
+              <Text style={Localstyles.friends}>Only Friends</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={Localstyles.paragraph}>
+            Most adventurous experience: {"\n"}My friend and I got stranded in a
+            blizzard when our SUV froze in Iceland!
+          </Text>
+          <Text style={Localstyles.paragraph}>
+            Top wishes: {"\n"}Take a year off to explore the world. {"\n"}Have a
+            family. Create a better life for people around me.
+          </Text>
+        </>
+      ) : (
+        <Text style={Localstyles.paragraph}>
+          This view is disabled because your settings are private
+        </Text>
+      )}
     </SafeAreaView>
   );
 };
